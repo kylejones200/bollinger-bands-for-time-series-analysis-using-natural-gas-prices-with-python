@@ -3,6 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 # Configuration
 plt.rcParams['axes.spines.top'] = False
 plt.rcParams['axes.spines.right'] = False
@@ -97,10 +103,10 @@ strategy_return = strategy_cumulative_return * 100
 buy_signals = (df['signal'] == 1).sum()
 sell_signals = (df['signal'] == -1).sum()
 
-print(f"Period: {df['date'].iloc[0].strftime('%Y-%m-%d')} to {df['date'].iloc[-1].strftime('%Y-%m-%d')}")
-print(f"Buy-and-Hold Return: {total_return:.2f}%")
-print(f"Bollinger Band Strategy Return: {strategy_return:.2f}%")
-print(f"Buy Signals: {buy_signals} | Sell Signals: {sell_signals}")
+logger.info(f"Period: {df['date'].iloc[0].strftime('%Y-%m-%d')} to {df['date'].iloc[-1].strftime('%Y-%m-%d')}")
+logger.info(f"Buy-and-Hold Return: {total_return:.2f}%")
+logger.info(f"Bollinger Band Strategy Return: {strategy_return:.2f}%")
+logger.info(f"Buy Signals: {buy_signals} | Sell Signals: {sell_signals}")
 
 # Visualization
 fig, axes = plt.subplots(3, 1, figsize=(14, 10))
@@ -174,6 +180,6 @@ plt.tight_layout()
 plt.savefig('bollinger_band_width.png', dpi=300, bbox_inches='tight')
 plt.show()
 
-print(f"\nSaved: bollinger_bands_analysis.png")
-print(f"Saved: bollinger_band_width.png")
+logger.info(f"\nSaved: bollinger_bands_analysis.png")
+logger.info(f"Saved: bollinger_band_width.png")
 

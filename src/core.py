@@ -31,7 +31,7 @@ def calculate_bollinger_bands(df: pd.DataFrame, window: int = 20,
 
 def plot_bollinger_bands(df: pd.DataFrame, target_col: str = 'adjClose',
                          window: int = 20, output_path: Path = None):
- """Plot Bollinger Bands """
+    """Plot Bollinger Bands """
     fig, ax = plt.subplots(figsize=(12, 6))
     
     ax.fill_between(df.index, df['Lower'].values, df['Upper'].values,

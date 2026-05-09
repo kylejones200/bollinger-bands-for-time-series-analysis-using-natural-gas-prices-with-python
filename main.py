@@ -48,7 +48,7 @@ def main():
             config['data']['volatility'],
             config['data']['seed']
         )
-        target_col = config['data']['target_column']
+    target_col = config['data']['target_column']
     
     df = calculate_bollinger_bands(
         df,
