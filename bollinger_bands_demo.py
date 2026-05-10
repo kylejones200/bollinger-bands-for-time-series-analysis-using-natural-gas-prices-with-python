@@ -22,19 +22,20 @@ def bollinger_bands(df, drop: bool = True, target_col: str = 'adjClose') -> pd.D
     df['20 Day MA_upper bound'] = df['20 Day MA'] + df[target_col].rolling(20).std() * 2
     return df
 
-def bb_plot(df: pd.DataFrame, target_col: str = 'adjClose'):
+def bb_plot(df: pd.DataFrame, target_col: str = 'adjClose', plot: bool = False):
     x = df.index
-    plt.figure(figsize=(12, 6))
-    plt.fill_between(x, df['20 Day MA_lower bound'].values, df['20 Day MA_upper bound'].values, alpha=0.3, label="Bollinger Band")
-    plt.plot(x, df[target_col].values, label=target_col)
-    plt.plot(x, df['20 Day MA'].values, label="20 Day MA", linestyle="--")
-    plt.title("Bollinger Bands for {}".format(target_col))
-    plt.xlabel('Date')
-    plt.ylabel('Price (USD)')
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig("bollinger_bands_gas_prices.png")
-    plt.show()
+    if plot:
+        plt.figure(figsize=(12, 6))
+        plt.fill_between(x, df['20 Day MA_lower bound'].values, df['20 Day MA_upper bound'].values, alpha=0.3, label="Bollinger Band")
+        plt.plot(x, df[target_col].values, label=target_col)
+        plt.plot(x, df['20 Day MA'].values, label="20 Day MA", linestyle="--")
+        plt.title("Bollinger Bands for {}".format(target_col))
+        plt.xlabel('Date')
+        plt.ylabel('Price (USD)')
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig("bollinger_bands_gas_prices.png")
+        plt.show()
 
 df = bollinger_bands(df)
 df.dropna(inplace=True)

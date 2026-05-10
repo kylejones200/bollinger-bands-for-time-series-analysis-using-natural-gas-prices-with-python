@@ -213,57 +213,58 @@ def plot_bollinger_bands(
         else:
             raise ValueError("DataFrame must have datetime index or 'ds'/'DATE' column")
     
-    fig, ax = plt.subplots(figsize=(12, 6))
+    if plot:
+        fig, ax = plt.subplots(figsize=(12, 6))
     
-    ma_col = f'{window} Day MA'
-    lower_col = f'{ma_col}_lower'
-    upper_col = f'{ma_col}_upper'
+        ma_col = f'{window} Day MA'
+        lower_col = f'{ma_col}_lower'
+        upper_col = f'{ma_col}_upper'
     
     # Fill between bands
-    ax.fill_between(
-        df.index,
-        df[lower_col].values,
-        df[upper_col].values,
-        alpha=0.15,
-        color="#8B6F9E",
-        label="Bollinger Band"
-    )
+        ax.fill_between(
+            df.index,
+            df[lower_col].values,
+            df[upper_col].values,
+            alpha=0.15,
+            color="#8B6F9E",
+            label="Bollinger Band"
+        )
     
     # Plot actual values
-    ax.plot(
-        df.index,
-        df[target_col].values,
-        label=target_col,
-        color="#4A90A4",
-        linewidth=1.2
-    )
+        ax.plot(
+            df.index,
+            df[target_col].values,
+            label=target_col,
+            color="#4A90A4",
+            linewidth=1.2
+        )
     
     # Plot moving average
-    ax.plot(
-        df.index,
-        df[ma_col].values,
-        label=f"{window} Day MA",
-        color="#D4A574",
-        linewidth=1.2,
-        linestyle="--"
-    )
+        ax.plot(
+            df.index,
+            df[ma_col].values,
+            label=f"{window} Day MA",
+            color="#D4A574",
+            linewidth=1.2,
+            linestyle="--"
+        )
     
     # Apply styling
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Price (USD)")
-    ax.legend(loc='best')
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Price (USD)")
+        ax.legend(loc='best')
     
     # Format x-axis dates
-    ax.xaxis.set_major_locator(YearLocator())
-    ax.xaxis.set_major_formatter(DateFormatter("%Y"))
-    plt.xticks(rotation=45)
+        ax.xaxis.set_major_locator(YearLocator())
+        ax.xaxis.set_major_formatter(DateFormatter("%Y"))
+        plt.xticks(rotation=45)
     
-    if output_path:
-        plt.savefig(output_path, dpi=100, bbox_inches="tight")
-        plt.close()
-    else:
-        plt.tight_layout()
-        plt.show()
+        if output_path:
+            plt.savefig(output_path, dpi=100, bbox_inches="tight")
+            plt.close()
+        else:
+            plt.tight_layout()
+            plt.show()
 
 # ============================================================================
 # Utility Plotting Functions
@@ -290,23 +291,24 @@ def plot_time_series_simple(
     df[date_col] = pd.to_datetime(df[date_col])
     df = df.dropna(subset=[date_col, value_col])
     
-    fig, ax = plt.subplots(figsize=(10, 5))
-    ax.plot(df[date_col], df[value_col], color='black', linewidth=2)
+    if plot:
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.plot(df[date_col], df[value_col], color='black', linewidth=2)
     
-    ax.set_xlabel("Date")
-    ax.set_ylabel(value_col)
+        ax.set_xlabel("Date")
+        ax.set_ylabel(value_col)
     
     # Format x-axis
-    ax.xaxis.set_major_locator(YearLocator(5))
-    ax.xaxis.set_major_formatter(DateFormatter("%Y"))
-    plt.xticks(rotation=45)
+        ax.xaxis.set_major_locator(YearLocator(5))
+        ax.xaxis.set_major_formatter(DateFormatter("%Y"))
+        plt.xticks(rotation=45)
     
-    if output_path:
-        plt.savefig(output_path, dpi=100, bbox_inches="tight")
-        plt.close()
-    else:
-        plt.tight_layout()
-        plt.show()
+        if output_path:
+            plt.savefig(output_path, dpi=100, bbox_inches="tight")
+            plt.close()
+        else:
+            plt.tight_layout()
+            plt.show()
 
 # ============================================================================
 # Main Analysis Functions

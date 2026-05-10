@@ -32,23 +32,24 @@ def calculate_bollinger_bands(df: pd.DataFrame, window: int = 20,
 def plot_bollinger_bands(df: pd.DataFrame, target_col: str = 'adjClose',
                          window: int = 20, output_path: Path = None):
     """Plot Bollinger Bands """
-    fig, ax = plt.subplots(figsize=(12, 6))
+                         if plot:
+        fig, ax = plt.subplots(figsize=(12, 6))
     
-    ax.fill_between(df.index, df['Lower'].values, df['Upper'].values,
-                    alpha=0.15, color="#8B6F9E", label="Bollinger Band")
-    ax.plot(df.index, df[target_col].values, label=target_col,
-           color="#4A90A4", linewidth=1.2)
-    ax.plot(df.index, df[f'{window} MA'].values, label=f"{window} Day MA",
-           color="#D4A574", linewidth=1.2, linestyle="--")
+        ax.fill_between(df.index, df['Lower'].values, df['Upper'].values,
+                        alpha=0.15, color="#8B6F9E", label="Bollinger Band")
+        ax.plot(df.index, df[target_col].values, label=target_col,
+               color="#4A90A4", linewidth=1.2)
+        ax.plot(df.index, df[f'{window} MA'].values, label=f"{window} Day MA",
+               color="#D4A574", linewidth=1.2, linestyle="--")
     
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Price (USD)")
-    ax.legend(loc='best')
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Price (USD)")
+        ax.legend(loc='best')
     
-    if output_path:
-        plt.savefig(output_path, dpi=100, bbox_inches="tight")
-        plt.close()
-    else:
-        plt.tight_layout()
-        plt.show()
+        if output_path:
+            plt.savefig(output_path, dpi=100, bbox_inches="tight")
+            plt.close()
+        else:
+            plt.tight_layout()
+            plt.show()
 
