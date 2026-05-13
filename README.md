@@ -32,9 +32,9 @@ Edit `config.yaml` to customize:
 ## Bollinger Bands
 
 Bollinger Bands consist of:
-- **Middle Band**: N-period moving average
-- **Upper Band**: Middle band + (N-period standard deviation × multiplier)
-- **Lower Band**: Middle band - (N-period standard deviation × multiplier)
+- Middle Band: N-period moving average
+- Upper Band: Middle band + (N-period standard deviation × multiplier)
+- Lower Band: Middle band - (N-period standard deviation × multiplier)
 
 Prices touching the upper or lower bands may indicate overbought or oversold conditions.
 
