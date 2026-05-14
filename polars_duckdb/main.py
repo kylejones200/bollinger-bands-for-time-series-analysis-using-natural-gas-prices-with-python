@@ -7,7 +7,6 @@ import yaml
 import logging
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
 from core import generate_synthetic_prices, calculate_bollinger_bands, plot_bollinger_bands
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
