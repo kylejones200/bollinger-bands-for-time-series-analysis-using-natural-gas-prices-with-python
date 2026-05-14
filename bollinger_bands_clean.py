@@ -10,9 +10,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 # Configuration
-plt.rcParams['axes.spines.top'] = False
-plt.rcParams['axes.spines.right'] = False
-plt.rcParams['figure.facecolor'] = 'white'
 np.random.seed(42)
 
 def generate_synthetic_price_data(n_days=365):
