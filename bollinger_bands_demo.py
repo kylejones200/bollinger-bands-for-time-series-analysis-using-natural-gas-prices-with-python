@@ -29,7 +29,7 @@ def bb_plot(df: pd.DataFrame, target_col: str = 'adjClose', plot: bool = False):
         plt.fill_between(x, df['20 Day MA_lower bound'].values, df['20 Day MA_upper bound'].values, alpha=0.3, label="Bollinger Band")
         plt.plot(x, df[target_col].values, label=target_col)
         plt.plot(x, df['20 Day MA'].values, label="20 Day MA", linestyle="--")
-        plt.title("Bollinger Bands for {}".format(target_col))
+        plt.title(f"Bollinger Bands for {target_col}")
         plt.xlabel('Date')
         plt.ylabel('Price (USD)')
         plt.legend()
