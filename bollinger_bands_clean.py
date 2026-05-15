@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 
 import logging
+np.random.seed(42)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 # Configuration
-np.random.seed(42)
 
 def generate_synthetic_price_data(n_days=365):
     """Generate synthetic stock price data with realistic characteristics."""

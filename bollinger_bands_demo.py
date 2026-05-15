@@ -3,13 +3,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import logging
+np.random.seed(0)
 
 # Load or simulate data
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 
-np.random.seed(0)
 dates = pd.date_range(start="2024-04-01", end="2024-10-31", freq="B")
 prices = 2.5 + np.cumsum(np.random.normal(0, 0.05, len(dates)))
 df = pd.DataFrame({{"date": dates, "adjClose": prices}}).set_index("date")

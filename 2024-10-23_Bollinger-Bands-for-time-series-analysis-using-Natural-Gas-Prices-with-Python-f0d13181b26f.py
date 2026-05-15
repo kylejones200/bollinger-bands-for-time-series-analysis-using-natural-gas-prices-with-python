@@ -7,6 +7,7 @@ import logging
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+np.random.seed(42)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -17,7 +18,6 @@ logging.basicConfig(
 
 
 # Configuration
-np.random.seed(42)
 
 def generate_synthetic_price_data(n_days=365):
     """Generate synthetic stock price data with realistic characteristics."""
