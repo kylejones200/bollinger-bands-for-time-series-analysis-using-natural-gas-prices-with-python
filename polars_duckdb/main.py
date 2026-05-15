@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Bollinger Bands — Polars + DuckDB rewrite."""
 
-import sys
 import argparse
 import yaml
 import logging

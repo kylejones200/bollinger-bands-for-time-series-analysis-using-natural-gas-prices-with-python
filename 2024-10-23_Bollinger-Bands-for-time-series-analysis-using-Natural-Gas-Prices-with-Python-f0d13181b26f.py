@@ -184,5 +184,5 @@ plt.tight_layout()
 plt.savefig('bollinger_band_width.png', dpi=300, bbox_inches='tight')
 plt.show()
 
-logger.info(f"\nSaved: bollinger_bands_analysis.png")
-logger.info(f"Saved: bollinger_band_width.png")
+logger.info("\nSaved: bollinger_bands_analysis.png")
+logger.info("Saved: bollinger_band_width.png")

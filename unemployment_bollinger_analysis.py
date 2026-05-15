@@ -14,10 +14,8 @@ Date: 2024-10-23
 import datetime
 import logging
 from pathlib import Path
-from typing import Optional, Tuple
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 from matplotlib.dates import DateFormatter, YearLocator
 from pandas_datareader import data as web
@@ -34,7 +32,7 @@ def load_fred_data(
     series_id: str,
     start_date: datetime.datetime,
     end_date: datetime.datetime,
-    rename_columns: Optional[dict] = None
+    rename_columns: dict | None = None
 ) -> pd.DataFrame:
     """
     Load economic data from FRED (Federal Reserve Economic Data).
@@ -80,7 +78,7 @@ def forecast_with_prophet(
     freq: str = 'MS',
     date_col: str = 'ds',
     value_col: str = 'y'
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Generate forecasts using Facebook Prophet.
     
@@ -112,7 +110,7 @@ def plot_prophet_forecast(
     model: Prophet,
     forecast: pd.DataFrame,
     title: str = "Prophet Forecast",
-    output_path: Optional[Path] = None
+    output_path: Path | None = None
 ) -> None:
     """
     Plot Prophet forecast with uncertainty bands.
@@ -123,7 +121,7 @@ def plot_prophet_forecast(
         title: Plot title
         output_path: Optional path to save figure
     """
-    fig = model.plot(forecast)
+    model.plot(forecast)
     ax = plt.gca()
     
     ax.set_xlabel("Date")
@@ -190,8 +188,8 @@ def plot_bollinger_bands(
     df: pd.DataFrame,
     target_col: str = 'adjClose',
     window: int = 20,
-    title: Optional[str] = None,
-    output_path: Optional[Path] = None
+    title: str | None = None,
+    output_path: Path | None = None
 ) -> None:
     """
     Plot time series with Bollinger Bands.
@@ -274,8 +272,8 @@ def plot_time_series_simple(
     df: pd.DataFrame,
     date_col: str,
     value_col: str,
-    title: Optional[str] = None,
-    output_path: Optional[Path] = None
+    title: str | None = None,
+    output_path: Path | None = None
 ) -> None:
     """
     Plot a simple time series.
@@ -318,8 +316,8 @@ def analyze_unemployment_rate(
     start_date: datetime.datetime,
     end_date: datetime.datetime,
     forecast_periods: int = 12,
-    output_dir: Optional[Path] = None
-) -> Tuple[pd.DataFrame, pd.DataFrame, Prophet]:
+    output_dir: Path | None = None
+) -> tuple[pd.DataFrame, pd.DataFrame, Prophet]:
     """
     Analyze unemployment rate data with Prophet forecasting.
     
@@ -362,7 +360,7 @@ def analyze_natural_gas_bollinger_bands(
     end_date: datetime.datetime,
     window: int = 20,
     num_std: float = 2.0,
-    output_dir: Optional[Path] = None
+    output_dir: Path | None = None
 ) -> pd.DataFrame:
     """
     Analyze natural gas prices with Bollinger Bands.
@@ -437,7 +435,6 @@ def main():
         logging.info(f"  Forecast range: {forecast_unemployment['ds'].min()} to {forecast_unemployment['ds'].max()}")
     except Exception as e:
         logging.error(f"✗ Error in unemployment analysis: {e}")
-        df_unemployment = None
     
     # Analysis 2: Natural Gas Bollinger Bands
     logging.info("Analysis 2: Natural Gas Bollinger Bands")
