@@ -43,3 +43,11 @@ Prices touching the upper or lower bands may indicate overbought or oversold con
 - By default, the script generates synthetic price data if no data file is provided.
 - Bollinger Bands are most effective with sufficient historical data (at least 20 periods for default window).
 - The bands adapt to volatility, expanding during volatile periods and contracting during stable periods.
+
+## Disclaimer
+
+Educational/demo code only. Not financial, safety, or engineering advice. Use at your own risk. Verify results independently before any production or operational use.
+
+## License
+
+MIT — see [LICENSE](LICENSE).

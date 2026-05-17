@@ -49,40 +49,42 @@ def plot_bollinger_bands(
     output_path: Path = None,
 ):
     """Plot Bollinger Bands"""
-    if plot:
-        fig, ax = plt.subplots(figsize=(12, 6))
+    if not plot:
+        return
 
-        ax.fill_between(
-            df.index,
-            df["Lower"].values,
-            df["Upper"].values,
-            alpha=0.15,
-            color="#8B6F9E",
-            label="Bollinger Band",
-        )
-        ax.plot(
-            df.index,
-            df[target_col].values,
-            label=target_col,
-            color="#4A90A4",
-            linewidth=1.2,
-        )
-        ax.plot(
-            df.index,
-            df[f"{window} MA"].values,
-            label=f"{window} Day MA",
-            color="#D4A574",
-            linewidth=1.2,
-            linestyle="--",
-        )
+    fig, ax = plt.subplots(figsize=(12, 6))
 
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Price (USD)")
-        ax.legend(loc="best")
+    ax.fill_between(
+        df.index,
+        df["Lower"].values,
+        df["Upper"].values,
+        alpha=0.15,
+        color="#8B6F9E",
+        label="Bollinger Band",
+    )
+    ax.plot(
+        df.index,
+        df[target_col].values,
+        label=target_col,
+        color="#4A90A4",
+        linewidth=1.2,
+    )
+    ax.plot(
+        df.index,
+        df[f"{window} MA"].values,
+        label=f"{window} Day MA",
+        color="#D4A574",
+        linewidth=1.2,
+        linestyle="--",
+    )
 
-        if output_path:
-            plt.savefig(output_path, dpi=100, bbox_inches="tight")
-            plt.close()
-        else:
-            plt.tight_layout()
-            plt.show()
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Price (USD)")
+    ax.legend(loc="best")
+
+    if output_path:
+        plt.savefig(output_path, dpi=100, bbox_inches="tight")
+        plt.close()
+    else:
+        plt.tight_layout()
+        plt.show()
