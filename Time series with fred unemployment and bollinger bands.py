@@ -11,7 +11,6 @@ import pandas as pd
 import pandas_datareader.data as web
 import plotly.graph_objs as go
 from matplotlib.dates import DateFormatter, YearLocator
-from pandas_datareader import data as web
 from prophet import Prophet
 
 
@@ -259,77 +258,45 @@ def timeseries_trad(df, y, periods=10, save=False):
 
 def notebook_step_004() -> None:
     start = datetime.datetime(2010, 1, 1)
-
     end = datetime.datetime(2025, 2, 20)
-
     df = web.DataReader("unrate", "fred", start, end)
-
     df.head()
-
     df.plot()
-
     df.reset_index(inplace=True)
-
     df.columns = ["ds", "y"]
-
     df.dropna(inplace=True)
-
     model = Prophet()
-
     model.fit(df)
-
     future = model.make_future_dataframe(periods=12)
-
     future.tail()
-
     future = model.make_future_dataframe(periods=12, freq="MS")
-
     fcst = model.predict(future)
-
-    fig = model.plot(fcst)
-
+    model.plot(fcst)
     forecast = model.predict(future)
-
     forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]].tail()
 
 
 def notebook_step_005() -> None:
     timeseries(forecast, "ds", "yhat", "yhat_lower", "yhat_upper", actual=df, save=True)
-
     df1 = web.DataReader("DHHNGSP", "fred", start, end)
-
     df1.plot()
-
     df1.reset_index(inplace=True)
-
     df1.columns = ["ds", "y"]
-
     m = Prophet()
-
     m.fit(df1)
-
     future = m.make_future_dataframe(periods=12, freq="MS")
-
     fcst = m.predict(future)
-
-    fig = m.plot(fcst)
-
+    m.plot(fcst)
     df1.set_index("ds", inplace=True)
-
     timeseries_trad(df1, "y", periods=10, save=True)
 
 
 def notebook_step_007() -> None:
     start = datetime.datetime(2024, 4, 1)
-
     end = datetime.datetime(2024, 10, 20)
-
     df2 = web.DataReader("DHHNGSP", "fred", start, end)
-
     df2["adjClose"] = df2["DHHNGSP"]
-
     df2 = bollinger_bands(df2.sort_values(by="DATE"))
-
     bb_plot(df2)
 
 
@@ -338,60 +305,38 @@ def notebook_step_009() -> None:
 
 
 def notebook_step_010() -> None:
-    df3 = df2.reset_index()
+    df2.reset_index()
 
 
 def notebook_step_011() -> None:
-    df3 = df3[["DATE", "DHHNGSP"]]
+    df3[["DATE", "DHHNGSP"]]
 
 
 def required_libraries() -> None:
     plt.rcParams.update(
         {"font.family": "serif", "axes.labelsize": 12, "axes.titlesize": 14}
     )
-
     start = datetime.datetime(2010, 1, 1)
-
     end = datetime.datetime(2025, 2, 20)
-
     df = web.DataReader("UNRATE", "fred", start, end)
-
     df.reset_index(inplace=True)
-
     df.columns = ["ds", "y"]
-
     df.dropna(inplace=True)
-
     model = Prophet()
-
     model.fit(df)
-
     future = model.make_future_dataframe(periods=12, freq="MS")
-
     fcst = model.predict(future)
-
-    fig = model.plot(fcst)
-
+    model.plot(fcst)
     plt.title("Unemployment Rate Forecast using Prophet")
-
     plt.xlabel("Year")
-
     plt.ylabel("Unemployment Rate")
-
     plt.savefig("prophet_unemployment_forecast.png", dpi=300, bbox_inches="tight")
-
     plt.show()
-
     start = datetime.datetime(2024, 4, 1)
-
     end = datetime.datetime(2024, 10, 20)
-
     df2 = web.DataReader("DHHNGSP", "fred", start, end)
-
     df2["adjClose"] = df2["DHHNGSP"]
-
     df2 = bollinger_bands(df2.sort_values(by="DATE"))
-
     bb_plot(df2)
 
 
@@ -399,37 +344,21 @@ def required_libraries_2() -> None:
     plt.rcParams.update(
         {"font.family": "serif", "axes.labelsize": 12, "axes.titlesize": 14}
     )
-
     start = datetime.datetime(2010, 1, 1)
-
     end = datetime.datetime(2025, 2, 20)
-
     df = web.DataReader("UNRATE", "fred", start, end)
-
     df.reset_index(inplace=True)
-
     df.columns = ["DATE", "y"]
-
     df["DATE"] = pd.to_datetime(df["DATE"])
-
     df.sort_values(by="DATE", inplace=True)
-
     model = Prophet()
-
     model.fit(df.rename(columns={"DATE": "ds", "y": "y"}))
-
     future = model.make_future_dataframe(periods=12, freq="MS")
-
     fcst = model.predict(future)
-
-    fig = model.plot(fcst)
-
+    model.plot(fcst)
     plt.title("Unemployment Rate Forecast using Prophet")
-
     plt.xlabel("Year")
-
     plt.ylabel("Unemployment Rate")
-
     add_caption(
         plt.gca(),
         "Unemployment Rate Forecast",
@@ -437,27 +366,16 @@ def required_libraries_2() -> None:
         end.strftime("%Y-%m-%d"),
         len(df),
     )
-
     plt.savefig("prophet_unemployment_forecast.png", dpi=300, bbox_inches="tight")
-
     plt.show()
-
     start = datetime.datetime(2024, 4, 1)
-
     end = datetime.datetime(2024, 10, 20)
-
     df2 = web.DataReader("DHHNGSP", "fred", start, end)
-
     df2.reset_index(inplace=True)
-
     df2.rename(columns={"DATE": "DATE"}, inplace=True)
-
     df2["adjClose"] = df2["DHHNGSP"]
-
     df2 = bollinger_bands(df2.sort_values(by="DATE"))
-
     df2.set_index("DATE", inplace=True)
-
     bb_plot(df2)
 
 
@@ -465,23 +383,14 @@ def required_libraries_3() -> None:
     plt.rcParams.update(
         {"font.family": "serif", "axes.labelsize": 12, "axes.titlesize": 14}
     )
-
     start = datetime.datetime(2024, 4, 1)
-
     end = datetime.datetime(2024, 10, 20)
-
     df2 = web.DataReader("DHHNGSP", "fred", start, end)
-
     df2.reset_index(inplace=True)
-
     df2["DATE"] = pd.to_datetime(df2["DATE"])
-
     df2.set_index("DATE", inplace=True)
-
     df2["adjClose"] = df2["DHHNGSP"]
-
     df2 = bollinger_bands(df2)
-
     bb_plot(df2)
 
 
@@ -489,19 +398,12 @@ def required_libraries_4() -> None:
     plt.rcParams.update(
         {"font.family": "serif", "axes.labelsize": 12, "axes.titlesize": 14}
     )
-
     start = datetime.datetime(2020, 1, 1)
-
     end = datetime.datetime(2025, 2, 20)
-
     df_unemployment = web.DataReader("UNRATE", "fred", start, end)
-
     df_unemployment.reset_index(inplace=True)
-
     df_unemployment.columns = ["DATE", "Unemployment Rate"]
-
     df_unemployment["DATE"] = pd.to_datetime(df_unemployment["DATE"])
-
     basic_time_series_plot(
         df_unemployment,
         "DATE",
@@ -519,19 +421,12 @@ def required_libraries_5() -> None:
     plt.rcParams.update(
         {"font.family": "serif", "axes.labelsize": 12, "axes.titlesize": 14}
     )
-
     start = datetime.datetime(2015, 1, 1)
-
     end = datetime.datetime(2025, 1, 1)
-
     df_unemployment = web.DataReader("UNRATE", "fred", start, end)
-
     df_unemployment.reset_index(inplace=True)
-
     df_unemployment.columns = ["DATE", "Unemployment Rate"]
-
     df_unemployment["DATE"] = pd.to_datetime(df_unemployment["DATE"])
-
     basic_time_series_plot(
         df_unemployment,
         "DATE",

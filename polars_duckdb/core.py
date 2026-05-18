@@ -74,7 +74,6 @@ def plot_bollinger_bands(
     ma = df["ma"].to_list()
     lower = df["lower_band"].to_list()
     upper = df["upper_band"].to_list()
-
     fig, ax = plt.subplots(figsize=(12, 6))
     ax.fill_between(
         dates, lower, upper, alpha=0.15, color="#8B6F9E", label="Bollinger Band"

@@ -49,8 +49,8 @@ def bb_plot(df: pd.DataFrame, target_col: str = "adjClose", plot: bool = False):
         plt.show()
 
 
-
 def main():
+    global df
     df = bollinger_bands(df)
     df.dropna(inplace=True)
     bb_plot(df)

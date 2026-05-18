@@ -37,7 +37,6 @@ def load_fred_data(
 ) -> pd.DataFrame:
     """
     Load economic data from FRED (Federal Reserve Economic Data).
-
     Args:
         series_id: FRED series identifier (e.g., 'UNRATE', 'DHHNGSP')
         start_date: Start date for data retrieval
@@ -54,7 +53,6 @@ def load_fred_data(
     """
     df = web.DataReader(series_id, "fred", start_date, end_date)
     df.reset_index(inplace=True)
-
     if rename_columns:
         df.rename(columns=rename_columns, inplace=True)
     else:
@@ -66,7 +64,6 @@ def load_fred_data(
 
     df["ds"] = pd.to_datetime(df["ds"])
     df = df.dropna().sort_values(by="ds").reset_index(drop=True)
-
     return df
 
 
@@ -84,7 +81,6 @@ def forecast_with_prophet(
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Generate forecasts using Facebook Prophet.
-
     Args:
         df: DataFrame with datetime and value columns
         periods: Number of periods to forecast
@@ -98,15 +94,12 @@ def forecast_with_prophet(
     # Prepare data for Prophet
     prophet_df = df[[date_col, value_col]].copy()
     prophet_df.columns = ["ds", "y"]
-
     # Fit model
     model = Prophet()
     model.fit(prophet_df)
-
     # Generate future dates and forecast
     future = model.make_future_dataframe(periods=periods, freq=freq)
     forecast = model.predict(future)
-
     return forecast, model
 
 
@@ -118,7 +111,6 @@ def plot_prophet_forecast(
 ) -> None:
     """
     Plot Prophet forecast with uncertainty bands.
-
     Args:
         model: Fitted Prophet model
         forecast: Forecast DataFrame from model.predict()
@@ -127,10 +119,8 @@ def plot_prophet_forecast(
     """
     model.plot(forecast)
     ax = plt.gca()
-
     ax.set_xlabel("Date")
     ax.set_ylabel("Value")
-
     if output_path:
         plt.savefig(output_path, dpi=100, bbox_inches="tight")
         plt.close()
@@ -153,12 +143,10 @@ def calculate_bollinger_bands(
 ) -> pd.DataFrame:
     """
     Calculate Bollinger Bands for a time series.
-
     Bollinger Bands consist of:
     - Middle band: N-period moving average
     - Upper band: Middle band + (N-period std dev * num_std)
     - Lower band: Middle band - (N-period std dev * num_std)
-
     Args:
         df: DataFrame with time series data
         window: Rolling window size (default: 20)
@@ -173,18 +161,14 @@ def calculate_bollinger_bands(
         >>> df = calculate_bollinger_bands(df, window=20, num_std=2.0)
     """
     df = df.copy()
-
     # Calculate moving average
     ma_col = f"{window} Day MA"
     df[ma_col] = df[target_col].rolling(window=window).mean()
-
     # Calculate standard deviation
     std = df[target_col].rolling(window=window).std()
-
     # Calculate bands
     df[f"{ma_col}_lower"] = df[ma_col] - (num_std * std)
     df[f"{ma_col}_upper"] = df[ma_col] + (num_std * std)
-
     if dropna:
         df = df.dropna()
 
@@ -200,7 +184,6 @@ def plot_bollinger_bands(
 ) -> None:
     """
     Plot time series with Bollinger Bands.
-
     Args:
         df: DataFrame with Bollinger Bands calculated
         target_col: Column name to plot
@@ -208,7 +191,6 @@ def plot_bollinger_bands(
         title: Optional plot title
         output_path: Optional path to save figure
     """
-
     # Ensure datetime index
     if not isinstance(df.index, pd.DatetimeIndex):
         if "ds" in df.columns:
@@ -220,11 +202,9 @@ def plot_bollinger_bands(
 
     if plot:
         fig, ax = plt.subplots(figsize=(12, 6))
-
         ma_col = f"{window} Day MA"
         lower_col = f"{ma_col}_lower"
         upper_col = f"{ma_col}_upper"
-
         # Fill between bands
         ax.fill_between(
             df.index,
@@ -234,7 +214,6 @@ def plot_bollinger_bands(
             color="#8B6F9E",
             label="Bollinger Band",
         )
-
         # Plot actual values
         ax.plot(
             df.index,
@@ -243,7 +222,6 @@ def plot_bollinger_bands(
             color="#4A90A4",
             linewidth=1.2,
         )
-
         # Plot moving average
         ax.plot(
             df.index,
@@ -253,17 +231,14 @@ def plot_bollinger_bands(
             linewidth=1.2,
             linestyle="--",
         )
-
         # Apply styling
         ax.set_xlabel("Date")
         ax.set_ylabel("Price (USD)")
         ax.legend(loc="best")
-
         # Format x-axis dates
         ax.xaxis.set_major_locator(YearLocator())
         ax.xaxis.set_major_formatter(DateFormatter("%Y"))
         plt.xticks(rotation=45)
-
         if output_path:
             plt.savefig(output_path, dpi=100, bbox_inches="tight")
             plt.close()
@@ -286,7 +261,6 @@ def plot_time_series_simple(
 ) -> None:
     """
     Plot a simple time series.
-
     Args:
         df: DataFrame with time series data
         date_col: Name of date column
@@ -294,22 +268,17 @@ def plot_time_series_simple(
         title: Optional plot title
         output_path: Optional path to save figure
     """
-
     df[date_col] = pd.to_datetime(df[date_col])
     df = df.dropna(subset=[date_col, value_col])
-
     if plot:
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.plot(df[date_col], df[value_col], color="black", linewidth=2)
-
         ax.set_xlabel("Date")
         ax.set_ylabel(value_col)
-
         # Format x-axis
         ax.xaxis.set_major_locator(YearLocator(5))
         ax.xaxis.set_major_formatter(DateFormatter("%Y"))
         plt.xticks(rotation=45)
-
         if output_path:
             plt.savefig(output_path, dpi=100, bbox_inches="tight")
             plt.close()
@@ -331,7 +300,6 @@ def analyze_unemployment_rate(
 ) -> tuple[pd.DataFrame, pd.DataFrame, Prophet]:
     """
     Analyze unemployment rate data with Prophet forecasting.
-
     Args:
         start_date: Start date for data
         end_date: End date for data
@@ -344,10 +312,8 @@ def analyze_unemployment_rate(
     logging.info("Loading unemployment rate data from FRED...")
     df = load_fred_data("UNRATE", start_date, end_date)
     logging.info(f"Loaded {len(df)} observations")
-
     logging.info("Fitting Prophet model...")
     forecast, model = forecast_with_prophet(df, periods=forecast_periods)
-
     if output_dir:
         output_dir = Path(output_dir)
         output_dir.mkdir(exist_ok=True, parents=True)
@@ -374,7 +340,6 @@ def analyze_natural_gas_bollinger_bands(
 ) -> pd.DataFrame:
     """
     Analyze natural gas prices with Bollinger Bands.
-
     Args:
         start_date: Start date for data
         end_date: End date for data
@@ -387,16 +352,13 @@ def analyze_natural_gas_bollinger_bands(
     """
     logging.info("Loading natural gas spot price data from FRED...")
     df = load_fred_data("DHHNGSP", start_date, end_date)
-
     # Set up for Bollinger Bands (use ds as index, rename y to adjClose)
     df = df.set_index("ds")
     df["adjClose"] = df["y"]
     df = df[["adjClose"]]
-
     logging.info(f"Loaded {len(df)} observations")
     logging.info("Calculating Bollinger Bands...")
     df = calculate_bollinger_bands(df, window=window, num_std=num_std)
-
     if output_dir:
         output_dir = Path(output_dir)
         output_dir.mkdir(exist_ok=True, parents=True)
@@ -428,14 +390,11 @@ def main():
     # Create output directory
     output_dir = Path("images")
     output_dir.mkdir(exist_ok=True, parents=True)
-
     logging.info("Time Series Analysis: Unemployment & Natural Gas Bollinger Bands")
-
     # Analysis 1: Unemployment Rate Forecasting
     logging.info("Analysis 1: Unemployment Rate Forecasting")
     unemployment_start = datetime.datetime(2010, 1, 1)
     unemployment_end = datetime.datetime(2025, 2, 20)
-
     try:
         df_unemployment, forecast_unemployment, model_unemployment = (
             analyze_unemployment_rate(
@@ -456,7 +415,6 @@ def main():
     logging.info("Analysis 2: Natural Gas Bollinger Bands")
     gas_start = datetime.datetime(2024, 4, 1)
     gas_end = datetime.datetime(2024, 10, 20)
-
     try:
         df_gas = analyze_natural_gas_bollinger_bands(
             gas_start, gas_end, window=20, num_std=2.0, output_dir=output_dir

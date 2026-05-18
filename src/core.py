@@ -1,15 +1,10 @@
 """Core functions for Bollinger Bands analysis."""
 
-import logging
 from pathlib import Path
-from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
-# Configure logging
-logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def generate_synthetic_prices(
@@ -53,7 +48,6 @@ def plot_bollinger_bands(
         return
 
     fig, ax = plt.subplots(figsize=(12, 6))
-
     ax.fill_between(
         df.index,
         df["Lower"].values,
@@ -77,11 +71,9 @@ def plot_bollinger_bands(
         linewidth=1.2,
         linestyle="--",
     )
-
     ax.set_xlabel("Date")
     ax.set_ylabel("Price (USD)")
     ax.legend(loc="best")
-
     if output_path:
         plt.savefig(output_path, dpi=100, bbox_inches="tight")
         plt.close()

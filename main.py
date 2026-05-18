@@ -21,7 +21,7 @@ logging.basicConfig(
 )
 
 
-def load_config(config_path: Path = None) -> dict:
+def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file."""
     if config_path is None:
         config_path = Path(__file__).parent / "config.yaml"
@@ -40,7 +40,6 @@ def main():
         "--output-dir", type=Path, default=None, help="Output directory for plots"
     )
     args = parser.parse_args()
-
     config = load_config(args.config)
     output_dir = (
         Path(args.output_dir)
@@ -48,7 +47,6 @@ def main():
         else Path(config["output"]["figures_dir"])
     )
     output_dir.mkdir(exist_ok=True)
-
     if args.data_path and args.data_path.exists():
         df = pd.read_csv(args.data_path, parse_dates=True, index_col=0)
         target_col = config["data"]["target_column"]
@@ -62,21 +60,18 @@ def main():
             config["data"]["seed"],
         )
     target_col = config["data"]["target_column"]
-
     df = calculate_bollinger_bands(
         df,
         config["bollinger_bands"]["window"],
         config["bollinger_bands"]["num_std"],
         target_col,
     )
-
     plot_bollinger_bands(
         df,
         target_col,
         config["bollinger_bands"]["window"],
         output_dir / "bollinger_bands.png",
     )
-
     logging.info(f"\nAnalysis complete. Figures saved to {output_dir}")
 
 

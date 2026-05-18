@@ -2,6 +2,7 @@
 
 Magics and shell lines are commented out. Run with a normal Python interpreter."""
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import requests
@@ -10,11 +11,9 @@ from pandas.io.json import json_normalize
 
 def bb_plot(df: pd.DataFrame = df, target_col: str = "adjClose") -> plt:
     """Calculates time series plot with Bollinger Bands
-
     :param df: DataFrame
     :param target_col: column that will be used for the calcuations
     :type target_col: str
-
     :return: plot
     :rtype: matplotlib.pyplot
     """
@@ -55,11 +54,9 @@ def bollinger_bands(
     df: pd.DataFrame = df, target_col: str = "adjClose"
 ) -> pd.DataFrame:
     """Calculates Bollinger Bands and returns an updated DataFrame.
-
     :param df: DataFrame
     :param target_col: column that will be used for the calcuations
     :type target_col: str
-
     :return: df with additional columns
     :rtype: pd.DataFrame
     """
@@ -112,35 +109,24 @@ def company_quote_group_of_items() -> None:
         "TSLA",
         "NVDA",
     )
-
     data = map(getdata, tickers)
-
     df = pd.DataFrame(
         data,
         columns=["Share Price", "Total Cash", "Total Debt", "Q3 2019 Revenue", "CEO"],
         index=tickers,
     )
-
     print(df)
-
     writer = pd.ExcelWriter("example.xlsx")
-
     df.to_excel(writer, "Statistics")
-
     writer.save()
 
 
 def getting_historical_data_for_rds_a_this_code_call() -> None:
     ticker = "RDS-A"
-
     target = f"https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}"
-
     rds = pd.read_json(target)
-
     rds = json_normalize(rds["historical"])
-
     rds["date"] = pd.to_datetime(rds["date"])
-
     rds.set_index("date", inplace=True)
 
 
@@ -150,16 +136,15 @@ def notebook_step_003() -> None:
 
 def notebook_step_005() -> None:
     rds = bollinger_bands(rds, "adjClose")
-
     bb_plot(rds)
 
 
 def fill_our_newly_created_position_column_set_to_se() -> None:
-    df = rds
+    pass
 
 
 def notebook_step_007() -> None:
-    df = bb_strategy(df)
+    bb_strategy(df)
 
 
 def notebook_step_008() -> None:
@@ -168,25 +153,15 @@ def notebook_step_008() -> None:
 
 def monte_carlo_valuation_of_european_call_option() -> None:
     S0 = rds["adjClose"][-1]
-
     K = 35.0
-
     T = 1
-
     r = 0.05
-
     sigma = np.std(rds["changeOverTime"])
-
-    I = 100000
-
-    z = np.random.standard_normal(I)
-
+    n_sims = 100_000
+    z = np.random.standard_normal(n_sims)
     ST = S0 * np.exp((r - 0.5 * sigma**2) * T + sigma * np.sqrt(T) * z)
-
     hT = np.maximum(ST - K, 0)
-
-    C0 = np.exp(-r * T) * np.sum(hT) / I
-
+    C0 = np.exp(-r * T) * np.sum(hT) / n_sims
     print(f"Value of the Call Option {C0:.5f}")
 
 
@@ -206,27 +181,17 @@ def notebook_step_012() -> None:
 
 def set_style_empty_figure_and_axes() -> None:
     fig = plt.figure(figsize=(12, 6))
-
     ax = fig.add_subplot(111)
-
     x_axis = rds.index
-
     ax.fill_between(
         x_axis, rds["20 Day MA_lower bound"], rds["20 Day MA_upper bound"], color="grey"
     )
-
     ax.plot(x_axis, rds["adjClose"], color="blue", lw=2)
-
     ax.plot(x_axis, rds["20 Day MA"], color="black", lw=2)
-
     ax.set_title("20 Day Bollinger Band For RDS-A")
-
     ax.set_xlabel("Date (Year/Month)")
-
     ax.set_ylabel("Price(USD)")
-
     ax.legend()
-
     plt.show()
 
 

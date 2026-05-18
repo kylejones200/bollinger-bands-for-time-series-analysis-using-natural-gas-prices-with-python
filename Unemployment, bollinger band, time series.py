@@ -13,11 +13,9 @@ from prophet import Prophet
 
 def bb_plot(df: pd.DataFrame = df, target_col: str = "adjClose"):
     """Calculates time series plot with Bollinger Bands
-
     :param df: DataFrame
     :param target_col: column that will be used for the calcuations
     :type target_col: str
-
     :return: plot
     :rtype: matplotlib.pyplot
     """
@@ -39,11 +37,9 @@ def bollinger_bands(
     df, drop: bool = True, target_col: str = "adjClose"
 ) -> pd.DataFrame:
     """Calculates Bollinger Bands and returns an updated DataFrame.
-
     :param df: DataFrame
     :param target_col: column that will be used for the calcuations
     :type target_col: str
-
     :return df: df with additional columns
     :rtype df: pd.DataFrame
     """
@@ -141,73 +137,39 @@ def timeseries_trad(df, y, periods=10, save=False):
 
 def main() -> None:
     start = datetime.datetime(2010, 1, 1)
-
     end = datetime.datetime(2024, 10, 1)
-
     df = web.DataReader("unrate", "fred", start, end)
-
     df.head()
-
     df.plot()
-
     df.reset_index(inplace=True)
-
     df.columns = ["ds", "y"]
-
     df.dropna(inplace=True)
-
     model = Prophet()
-
     model.fit(df)
-
     future = model.make_future_dataframe(periods=12)
-
     future.tail()
-
     future = model.make_future_dataframe(periods=12, freq="MS")
-
     fcst = model.predict(future)
-
-    fig = model.plot(fcst)
-
+    model.plot(fcst)
     forecast = model.predict(future)
-
     forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]].tail()
-
     timeseries(forecast, "ds", "yhat", "yhat_lower", "yhat_upper", actual=df, save=True)
-
     df1 = web.DataReader("DHHNGSP", "fred", start, end)
-
     df1.plot()
-
     df1.reset_index(inplace=True)
-
     df1.columns = ["ds", "y"]
-
     m = Prophet()
-
     m.fit(df1)
-
     future = m.make_future_dataframe(periods=12, freq="MS")
-
     fcst = m.predict(future)
-
-    fig = m.plot(fcst)
-
+    m.plot(fcst)
     df1.set_index("ds", inplace=True)
-
     timeseries_trad(df1, "y", periods=10, save=True)
-
     start = datetime.datetime(2024, 4, 1)
-
     end = datetime.datetime(2024, 10, 20)
-
     df2 = web.DataReader("DHHNGSP", "fred", start, end)
-
     df2["adjClose"] = df2["DHHNGSP"]
-
     df2 = bollinger_bands(df2.sort_values(by="DATE"))
-
     bb_plot(df2)
 
 
