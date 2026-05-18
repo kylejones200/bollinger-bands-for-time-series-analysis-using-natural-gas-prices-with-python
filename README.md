@@ -2,6 +2,14 @@
 
 This project demonstrates Bollinger Bands analysis for time series data, commonly used in technical analysis of financial markets.
 
+## Business context
+
+Bollinger Bands are an intuitive tool for assessing a stock's price movement. We can use them to look at the underlying volatility of a stock and potential trading opportunities. These are often used in technical trading analysis and were developed by [John Bollinger](https://www.bollingerbands.com/) in the 1980s.
+
+The premise of Bollinger Bands is straightforward and assume that stocks will revert to the mean. Bollinger Bands plot a simple moving average of a stock's price, accompanied by two standard deviation lines placed above and below the moving average. These upper and lower bands create a dynamic envelope that captures the typical range of the expected price action. This can be used to measure market volatility.
+
+This code calculates the Bollinger Bands for a given stock, using a 20-day simple moving average and a standard deviation of 2. The resulting bands are then plotted alongside the stock's closing prices, providing a visual representation of the security's price dynamics and volatility.
+
 ## Article
 
 Medium article: [Bollinger Bands for Time Series Analysis](https://medium.com/datadriveninvestor/bollinger-bands-for-time-series-analysis-using-natural-gas-prices-with-python-f0d13181b26f)
