@@ -20,7 +20,7 @@ def calculate_bollinger_bands(df: pd.DataFrame, window: int=20, num_std: float=2
     df['Upper'] = df[f'{window} MA'] + num_std * std
     return df.dropna()
 
-def plot_bollinger_bands(df: pd.DataFrame, target_col: str='adjClose', window: int=20, output_path: Path | None=None, plot: bool = False):
+def plot_bollinger_bands(df: pd.DataFrame, target_col: str='adjClose', window: int=20, output_path: Path | None=None, plot: bool=False):
     """Plot Bollinger Bands"""
     if not plot:
         return
